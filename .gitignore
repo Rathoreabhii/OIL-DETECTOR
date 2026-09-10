@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+dist/
+.vite/
+
+# Python
+__pycache__/
+*/__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Large Datasets & Archives (Prevents 85GB upload and GitHub 100MB file rejection)
+data/zenodo/
+data/processed_512/
+*.7z
+*.tar.gz
+
+# Unused large 3D archives (e.g. ship-pinnace-aft-diff.zip is 136MB > GitHub 100MB limit)
+3dmodels/*.zip
+
+# Obsolete / Weak model checkpoints
+backend/models/*_ep14.pt
+
+# Graphify internal cache
+graphify-out/cache/
+graphify-out/.*
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
+

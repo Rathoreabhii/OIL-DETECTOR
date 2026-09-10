@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Oil spill investigation</title>
+  </head>
+  <body>
+    <!--
+      THESIS: One-case investigation desk — map evidence plus ranked ships, not a landing page or 3D ocean.
+      OWN-WORLD: Dim ops-room neutrals, oil-amber selection, steel hindcast / rust forecast, system sans, dense tables.
+      STORY: Fetch the demo case. If the API is down, say so and show no scores.
+      FIRST VIEWPORT: Top bar; Map canvas left; slick, environment, ranks, reasons right.
+      FORM: Operate / forensic map-and-dossier (brief-specified; no marketing world).
+    -->
+    <div id="app">
+      <div class="app" data-state="loading" data-tab="map">
+        <header class="topbar">
+          <div class="brand">
+            <h1>Oil spill investigation</h1>
+            <p>NTRO SIH 26143 — demo case (not operational)</p>
+          </div>
+          <div class="case-pick" id="case-pick" hidden>
+            <label for="case-select">Case</label>
+            <select id="case-select"></select>
+          </div>
+          <div class="tabs" id="tabs">
+            <div class="tabs-base" role="tablist" aria-label="Views">
+              <button type="button" role="tab" id="tab-map" aria-controls="view-map" aria-selected="true" data-tab="map">Map</button>
+              <button type="button" role="tab" id="tab-sea" aria-controls="view-sea" aria-selected="false" data-tab="sea" tabindex="-1">Sea</button>
+              <button type="button" role="tab" id="tab-upload" aria-controls="view-upload" aria-selected="false" data-tab="upload" tabindex="-1">Upload</button>
+            </div>
+            <div class="tabs-active" id="tabs-active" aria-hidden="true">
+              <span>Map</span>
+              <span>Sea</span>
+              <span>Upload</span>
+            </div>
+          </div>
+        </header>
+        <div id="banner" class="banner" hidden></div>
+        <div class="stage">
+          <section id="view-map" class="workspace" role="tabpanel" aria-labelledby="tab-map">
+            <div class="map-wrap">
+              <div id="map" aria-label="Investigation map"></div>
+              <form class="map-layers" id="map-layers" aria-label="Map layers">
+                <label><input type="checkbox" name="layer" value="sar" checked /> SAR</label>
+                <label><input type="checkbox" name="layer" value="slick" checked /> Slick</label>
+                <label><input type="checkbox" name="layer" value="origin" checked /> Origin</label>
+                <label><input type="checkbox" name="layer" value="vessels" checked /> Vessels</label>
+              </form>
+            </div>
+            <aside class="panel" aria-label="Case evidence">
+              <div id="panel-body" class="panel-body"></div>
+              <footer id="panel-foot" class="panel-foot" hidden></footer>
+            </aside>
+          </section>
+          <section id="view-sea" class="workspace sea-view" role="tabpanel" aria-labelledby="tab-sea" hidden>
+            <div class="sea-stage">
+              <video
+                id="sea-video"
+                class="sea-video"
+                src="/sea.mp4"
+                muted
+                autoplay
+                loop
+                playsinline
+                webkit-playsinline
+                preload="auto"
+                disablepictureinpicture
+                aria-hidden="true"
+              ></video>
+              <canvas id="sea-gl" aria-hidden="true"></canvas>
+              <canvas id="sea-canvas" aria-label="Close-up ships. Touch a ship to leak oil. Drag time to move them."></canvas>
+              <div class="sea-dock">
+                <label class="sea-time">
+                  Time (h)
+                  <input id="sea-time" type="range" min="0" max="16" step="0.1" value="0" />
+                  <output id="sea-time-val" for="sea-time">t = 0.0 h</output>
+                </label>
+                <p class="sea-caption">
+                  Touch a ship — it leaks and the side panel fills. Drag Time — ships move, oil spreads (current + 0.03×wind).
+                  3D hull is a shared placeholder, not a tanker class. Not SAR. Not operational.
+                  <span id="sea-note"></span>
+                </p>
+              </div>
+            </div>
+            <aside class="panel" id="sea-panel" aria-label="Selected ship">
+              <div id="sea-side" class="panel-body"></div>
+            </aside>
+          </section>
+          <section id="view-upload" class="placeholder" role="tabpanel" aria-labelledby="tab-upload" hidden>
+            <div class="placeholder-copy">
+              <h2>Upload</h2>
+              <p id="upload-hint">Sentinel-1 GRD / dataset PNG. RGB holiday photos are not SAR.</p>
+              <form
+                id="upload-form"
+                class="upload-form"
+                method="post"
+                action="/api/investigate"
+                enctype="multipart/form-data"
+                novalidate
+              >
+                <label>
+                  SAR file
+                  <input
+                    type="file"
+                    name="sar"
+                    accept=".png,.tif,.tiff,.jp2,image/png,image/tiff"
+                    aria-describedby="upload-hint"
+                  />
+                </label>
+                <label>
+                  AIS CSV (optional)
+                  <input type="file" name="ais" accept=".csv,text/csv" />
+                </label>
+                <div class="upload-env">
+                  <label>
+                    Wind speed (m/s)
+                    <input type="number" name="wind_speed" min="0" step="0.1" value="8" />
+                  </label>
+                  <label>
+                    Wind toward (deg)
+                    <input type="number" name="wind_toward" step="1" value="72" />
+                  </label>
+                  <label>
+                    Current speed (m/s)
+                    <input type="number" name="current_speed" min="0" step="0.01" value="0.5" />
+                  </label>
+                  <label>
+                    Current toward (deg)
+                    <input type="number" name="current_toward" step="1" value="90" />
+                  </label>
+                </div>
+                <label>
+                  Observed at (UTC)
+                  <input type="text" name="observed_at" value="2024-03-12T06:40:00Z" spellcheck="off" autocomplete="off" />
+                </label>
+                <div class="upload-env">
+                  <label>
+                    South
+                    <input type="number" name="south" step="0.01" value="18.48" />
+                  </label>
+                  <label>
+                    West
+                    <input type="number" name="west" step="0.01" value="71.62" />
+                  </label>
+                  <label>
+                    North
+                    <input type="number" name="north" step="0.01" value="18.82" />
+                  </label>
+                  <label>
+                    East
+                    <input type="number" name="east" step="0.01" value="72.18" />
+                  </label>
+                </div>
+                <button type="submit" disabled title="Choose a Sentinel-1 GRD / dataset PNG first">
+                  Run detect → drift → score
+                </button>
+                <p id="upload-status" class="placeholder-note" role="status" aria-live="polite" hidden></p>
+              </form>
+            </div>
+          </section>
+        </div>
+        <div id="desk-dock" class="desk-dock">
+          <form id="analyze-form" class="desk-env">
+            <label>
+              Wind m/s
+              <input type="number" name="wind_speed" min="0" step="0.1" value="6.4" />
+            </label>
+            <label>
+              Wind toward°
+              <input type="number" name="wind_toward" step="1" value="65" />
+            </label>
+            <label>
+              Current m/s
+              <input type="number" name="current_speed" min="0" step="0.01" value="0.38" />
+            </label>
+            <label>
+              Current toward°
+              <input type="number" name="current_toward" step="1" value="72" />
+            </label>
+            <button type="submit" id="run-analyze">Run investigation</button>
+          </form>
+          <label class="desk-time">
+            Time (h)
+            <input id="desk-time" type="range" min="-16" max="16" step="0.1" value="0" />
+            <output id="desk-time-val" for="desk-time">t = 0.0 h</output>
+          </label>
+          <ol class="pipeline" id="pipeline" aria-label="Pipeline">
+            <li data-step="ingest">Ingest</li>
+            <li data-step="detect">Detect</li>
+            <li data-step="drift">Drift</li>
+            <li data-step="ais">AIS</li>
+            <li data-step="score">Score</li>
+          </ol>
+          <p id="analyze-status" class="desk-status" role="status" aria-live="polite" hidden></p>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
