@@ -1,0 +1,38 @@
+{
+  "oil": {
+    "n": 150,
+    "nonempty_gt": 150,
+    "scenes_with_pred_oil": 148,
+    "tp": 42737672,
+    "fp": 10403470,
+    "fn": 19764315,
+    "recall": 0.6837810132340273,
+    "precision": 0.8042294612336333,
+    "dice": 0.7391303291352485,
+    "false_oil_scenes": null
+  },
+  "lookalike": {
+    "n": 150,
+    "nonempty_gt": 0,
+    "scenes_with_pred_oil": 79,
+    "tp": 0,
+    "fp": 15157061,
+    "fn": 0,
+    "recall": 0.0,
+    "precision": 0.0,
+    "dice": 0.0,
+    "false_oil_scenes": 79
+  },
+  "no_oil": {
+    "n": 150,
+    "nonempty_gt": 0,
+    "scenes_with_pred_oil": 31,
+    "tp": 0,
+    "fp": 12860274,
+    "fn": 0,
+    "recall": 0.0,
+    "precision": 0.0,
+    "dice": 0.0,
+    "false_oil_scenes": 31
+  }
+}

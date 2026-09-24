@@ -21,8 +21,25 @@ data/processed_512/
 # Unused large 3D archives (e.g. ship-pinnace-aft-diff.zip is 136MB > GitHub 100MB limit)
 3dmodels/*.zip
 
-# Obsolete / Weak model checkpoints
-backend/models/*_ep14.pt
+# Model weights (track active model, ignore backups/experiments)
+backend/models/*.pt
+!backend/models/oil_unet.pt
+
+# Calibration / experiment snapshots (keep calibration_part12.json tracked)
+backend/models/*_backup*.json
+backend/models/*_gamma0*.json
+backend/models/*_new*.json
+backend/models/*_darkrim*.json
+backend/models/*_epoch18*.json
+backend/models/*_30ep_*.json
+backend/models/*.jsonl
+
+# Upload artefacts (generated at runtime)
+data/demo/upload_*.json
+data/demo/upload_*.png
+
+# .grok (editor metadata)
+.grok/
 
 # Graphify internal cache
 graphify-out/cache/

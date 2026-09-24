@@ -8,11 +8,16 @@ export function leewayEN(env) {
   const current = env?.current ?? {};
   const wSpeed = Number(wind.speed_ms) || 0;
   const cSpeed = Number(current.speed_ms) || 0;
-  const wRad = ((Number(wind.toward_deg) || 0) * Math.PI) / 180;
-  const cRad = ((Number(current.toward_deg) || 0) * Math.PI) / 180;
-  const east = cSpeed * Math.cos(cRad) + wSpeed * WIND_FACTOR * Math.cos(wRad);
-  const north = -cSpeed * Math.sin(cRad) - wSpeed * WIND_FACTOR * Math.sin(wRad);
-  return { east, north };
+  const toEN = (speed, deg) => {
+    const r = (deg * Math.PI) / 180;
+    return { east: speed * Math.sin(r), north: speed * Math.cos(r) };
+  };
+  const w = toEN(wSpeed, Number(wind.toward_deg) || 0);
+  const c = toEN(cSpeed, Number(current.toward_deg) || 0);
+  return {
+    east: c.east + WIND_FACTOR * w.east,
+    north: c.north + WIND_FACTOR * w.north,
+  };
 }
 
 export function stepLatLon(lat, lon, veMs, vnMs, hours) {

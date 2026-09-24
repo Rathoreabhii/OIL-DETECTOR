@@ -1,5 +1,7 @@
 # Third-party notices
 
+This file is **only** for the frozen FFT ocean (port **5173**). Product/demo: `CURRENT_STATE.md`, `SIH.md`.
+
 This environment uses public oceanographic models and MIT-licensed technique references.
 
 ## Mathematics (public literature)

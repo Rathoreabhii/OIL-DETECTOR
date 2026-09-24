@@ -1,4 +1,9 @@
-# SIH 26143 — work saved so far (2026-09-06)
+# SIH 26143 — work saved so far
+
+**Live snapshot (numbers, leftover train, upload):** `CURRENT_STATE.md`.  
+**Part 3 JSON (`backend/models/oil_unet_part3_test.json`):** still reflects 30ep NEW weights — Scene Hit Rate **98.7% (148/150)**; 30ep: oil pixel recall **54.2%**, Dice **0.662**, prec **85.0%**, lookalike FA **78/150**, no-oil **31/150**. **ACTIVE `oil_unet.pt` is `backup_run2.pt` lineage (~67% recall, Dice 0.758–0.764). `oil_unet_part3_test.json` is STALE until one frozen re-eval after night retrain.** Do not quote Dice 0.881 (retired leaky tile split). Tile-val `oil_unet_metrics_backup.json` epoch 15: Dice 0.844, recall 0.896, precision 0.798.
+
+Date of this file’s older sections: 2026-09-06. Sections below that still say 1,192 tiles or 0.881 as “independent val” are **historical**. Working set is **9,296 tiles**.
 
 ## Hardware (always — every agent, every train, every verify)
 
@@ -36,6 +41,8 @@ npm run dev
 
 Browser: **http://localhost:5174** (not 5173 — that is the frozen 3D FFT ocean).
 
+`oceantrace_frontend/` on **http://localhost:5175** (Vite proxies `/api` + `/demo` → 8000). **Truth layer** = `case_001` (ARABIAN HORIZON, leeway, API ranks 30/30/20/10/10). **Particles** = local simulation, not the U-Net, not OpenDrift. If API is down, splash must error — no silent Ocean Pride. Judge script remains **5174**. Not 5173.
+
 ## Deep Learning AI Segmentation (Phase B — retrained on high-contrast pol)
 
 Hardware: 16 GB RAM + RTX 4060 8 GB. AMP, batch 8, 512×512, one scene at a time. **25 epochs in 13.7 min.** Best weights **epoch 9**.
@@ -44,7 +51,28 @@ Hardware: 16 GB RAM + RTX 4060 8 GB. AMP, batch 8, 512×512, one scene at a time
 
 **Tiles (this run):** `data/processed_512/` **1,192** L-mode PNGs, **228 MB**, 988 oil + 204 sea, `mask > 0`. Old low-contrast tiles were wiped first. Backup of the weak checkpoint: `backend/models/oil_unet_vv_ep14.pt` (name is historical; that file was the **index-0** 0.27-Dice run).
 
-**Independent val (same SEED=42 split, 239 tiles, re-measured after train — not copied from the logger):**
+**Mixed train 2026-09-11 (Part 1 oil + Part 2 lookalike/no-oil, hardware-safe):**
+
+- Tiler **did not wipe** oil tiles. Appended `look_*` 564 + `noil_*` 100 (one scene in RAM, GPU idle).
+- Scene-stratified split: oil 120/30, look 117/29, noil 39/10 scenes. **No shared scenes.**
+- Fine-tune from `oil_unet_part1.pt` weights only, fresh Adam, `NUM_WORKERS=0`, batch 8, AMP. **25.1 min, no OOM** (8.0 GB VRAM free at start).
+- Best **epoch 21**: global Dice **0.855**, recall **0.842**, precision **0.868**, lookalike FP **0.0008** (val look tiles almost never painted as oil).
+- Smoke: tile Dice 0.895 / 0.901; demo PNG `unet-sentinel1` area **0.08 km²** (tighter than the old 1.74 km² over-paint).
+- Retired: leaky Part-1-only Dice **0.881** (tiles from the same scene in train and val). Do not quote 0.881 as the current score.
+
+**Update 2026-09-21 — tiling expanded (append-only, old tiles untouched):**
+- On disk now: **25,168** tiles (16,287 oil / 6,691 look / 2,190 noil) from **1,200 oil + 685 look + 350 noil** scenes.
+- Manifest `backend/models/split_manifest.json` hash `40b2b45dd2e0` (train/model_val/calibration scene-disjoint, Part-3 guarded).
+- Old "9,296 tiles" counts retired in `CURRENT_STATE.md`.
+
+**Update 2026-09-21 — active model lineage:**
+- Active `oil_unet.pt` = `oil_unet_backup_run2.pt` copy (Run 2 lineage, ~67% Part 3 recall).
+- Preserved: `oil_unet_new_30ep_54recall.pt` (30ep retrain), `oil_unet_metrics_new.json`, `calibration_part12_new_54recall.json`. Original `oil_unet_backup_run2.pt` untouched.
+- Tile-val active lineage (`oil_unet_metrics_backup.json` epoch 15): Global Dice **0.844**, recall **0.896**, precision **0.798**.
+- Part 1/2 calibration 2026-09-21 (60 scenes, active OLD weights): recall **0.9197**, precision **0.8500**, Dice **0.8835** (single 0.15/200). Hysteresis alt 0.15/0.35 blob 450: recall 0.9180, prec 0.8524, FA 9+4=13. Saved as `calibration_part12_old_67recall.json`. Previous NEW calibration 0.9056/0.8642/0.8844 saved as `calibration_part12_new_54recall.json`. Dry-run resolves 447 scenes (240 oil / 137 look / 70 noil).
+- `train.py:178` still `focal_gamma=2.0` — set 0.0 before night retrain.
+
+**Independent val (old leaky SEED=42 tile split — retired):**
 
 | | old index-0 weights | new index-1 weights |
 |---|---|---|
@@ -80,7 +108,7 @@ Written to `backend/models/oil_unet_metrics.json`. `train.py` now logs **global*
 
 ## Physics and ranking (honest)
 
-- Leeway: **100% current + 3% wind**. `toward_deg`: 0 = east, 90 = south.
+- Leeway: **100% current + 3% wind**. `toward_deg`: **0 = north, 90 = east** (AIS heading). Older “0 = east” notes are wrong for `case_001` / current `drift.py`.
 - Score: **0.30 type + 0.30 proximity + 0.20 time + 0.10 heading + 0.10 AIS gap**.
 - Demo case `case_001` is canned SAR-like PNG + synthetic AIS. Source = **demo**.
 - Analyze route: `POST /api/cases/{id}/analyze` (drift + score only).
@@ -117,13 +145,14 @@ Written to `backend/models/oil_unet_metrics.json`. `train.py` now logs **global*
 - Dual-pol (index 0 + 1) would need a new detect/predict path; grayscale upload cannot carry two bands. Not this demo.
 - Polygon is still a 16-vertex star, not a contour. Area uses the full binary mask.
 - Real Sentinel-1 GeoTIFF dual-pol is not decoded as two bands (upload is PNG/JPEG → gray).
-- Disk: extracted Oil TIFFs ~49 GB + the 7z. Delete one copy if the drive is full.
+- Disk: extracted Oil TIFFs ~48 GB still on disk; Part 1 **images.7z already deleted**. Masks ~5 GB.
 - Restart API after this retrain. Do not use `run_trim.bat` (it launches `selective_trim.py`, not the SEED=42 tiler).
 - Real tanker/cargo GLBs (current hull is one cloned warship)
 - Real AIS / live Sentinel-1 GRD ingest
 - HYCOM or any real ocean model
 - Browser-proof of Sea video + 3D on this machine
 - Judge Map path stays canned demo (`slick.source=demo`). Upload is the U-Net path.
+- **Astra audit (`ASTRA_GAP_ANALYSIS_AND_VERIFICATION.md`):** scene-level train/val leak is real (118/150 scenes overlap; val is not unseen). Star polygon is real. Dual-pol / OpenDrift / second dashboard / Focal-as-bug / “no AIS tracks” are oversold or false. Grok verdict is at the top of that file.
 
 ## Graph (this run)
 

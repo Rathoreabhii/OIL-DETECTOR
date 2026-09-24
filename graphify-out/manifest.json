@@ -1,14 +1,4 @@
 {
-  "_gen_coast.py": {
-    "mtime": 1788513172.0407722,
-    "ast_hash": "137e41644964eb58e06d9a14d4dff3fd",
-    "semantic_hash": "137e41644964eb58e06d9a14d4dff3fd"
-  },
-  "_layout_out.js": {
-    "mtime": 1788513178.8645399,
-    "ast_hash": "c1ab62c9e4903be3aba2cd556d9835f1",
-    "semantic_hash": "c1ab62c9e4903be3aba2cd556d9835f1"
-  },
   "backend/__init__.py": {
     "mtime": 1788678897.7665842,
     "ast_hash": "10b24d654865c021476b9f9f21f77df1",
@@ -20,19 +10,19 @@
     "semantic_hash": "a8de2559f91ac05e39cff638c2974a5d"
   },
   "backend/detect.py": {
-    "mtime": 1788678897.77962,
-    "ast_hash": "eb362c13cb96807da4fa7ddf8418f93a",
-    "semantic_hash": "eb362c13cb96807da4fa7ddf8418f93a"
+    "mtime": 1789360132.5228145,
+    "ast_hash": "1c3193e299ec9e209d3420f8e790442f",
+    "semantic_hash": ""
   },
   "backend/drift.py": {
-    "mtime": 1788529435.1243174,
-    "ast_hash": "a409d4432b3daadd80748c767683f91e",
-    "semantic_hash": "a409d4432b3daadd80748c767683f91e"
+    "mtime": 1789294178.1343143,
+    "ast_hash": "e6cb724e5d803a26fb491c8c450728b6",
+    "semantic_hash": ""
   },
   "backend/investigate.py": {
-    "mtime": 1788678637.3860385,
-    "ast_hash": "8d0eb4ad5e610b3bb92ed3f1bd8d769c",
-    "semantic_hash": "8d0eb4ad5e610b3bb92ed3f1bd8d769c"
+    "mtime": 1789360132.5157387,
+    "ast_hash": "abca4a60151426048d910bec5475e743",
+    "semantic_hash": ""
   },
   "backend/main.py": {
     "mtime": 1788678897.7665842,
@@ -70,9 +60,9 @@
     "semantic_hash": "8a8e6cf2efbe107c55b3983a0bb6bb66"
   },
   "frontend/src/leeway.js": {
-    "mtime": 1788535502.7395003,
-    "ast_hash": "610e11647a957410fb3f806d91a9593b",
-    "semantic_hash": "610e11647a957410fb3f806d91a9593b"
+    "mtime": 1789294178.1343143,
+    "ast_hash": "86c9b74f291553b41a5048eb5e9ea18f",
+    "semantic_hash": ""
   },
   "frontend/src/main.js": {
     "mtime": 1788535652.6270561,
@@ -220,19 +210,14 @@
     "semantic_hash": "26839d6714cc94e6e40e6609faf3a883"
   },
   "SIH.md": {
-    "mtime": 1788680022.480208,
-    "ast_hash": "56bb098ae080fd7de9914be86df4be81",
-    "semantic_hash": "56bb098ae080fd7de9914be86df4be81"
-  },
-  "_coast_out.txt": {
-    "mtime": 1788512719.6313381,
-    "ast_hash": "100b97e57472eea138f0ac5eda8c55b0",
-    "semantic_hash": "100b97e57472eea138f0ac5eda8c55b0"
+    "mtime": 1789360196.0078366,
+    "ast_hash": "8f8e83b60f136688cbe14efddefafec1",
+    "semantic_hash": ""
   },
   "frontend/index.html": {
-    "mtime": 1788539385.7946253,
-    "ast_hash": "4b146a433437833da2e59c65acff5a3e",
-    "semantic_hash": "4b146a433437833da2e59c65acff5a3e"
+    "mtime": 1789295468.8933403,
+    "ast_hash": "f57a7b34ae7e6e250b0dd2cd7fdd10f7",
+    "semantic_hash": ""
   },
   "frontend/public/ships/README.txt": {
     "mtime": 1788538293.5310564,
@@ -240,9 +225,9 @@
     "semantic_hash": "5c833e79703be514c506a464f23965a8"
   },
   "STATUS.md": {
-    "mtime": 1788841425.5548692,
-    "ast_hash": "951776c4d7d73855e124e59c581d91e3",
-    "semantic_hash": "951776c4d7d73855e124e59c581d91e3"
+    "mtime": 1789360263.4869943,
+    "ast_hash": "477b80bb1125e10226b17d7c17a36bf0",
+    "semantic_hash": ""
   },
   "3dmodels/textures/hull_diffuse.jpg": {
     "mtime": 1788537950.4658244,
@@ -275,44 +260,34 @@
     "semantic_hash": "40fa4869d162e895e098106cfa39ed75"
   },
   "backend/ml/config.py": {
-    "mtime": 1788680022.480208,
-    "ast_hash": "02921338c65a9aa6535e044fdb5b9e46",
-    "semantic_hash": "02921338c65a9aa6535e044fdb5b9e46"
+    "mtime": 1789199284.160868,
+    "ast_hash": "ed6465452f22a8c1f90a303ef3d2d0b7",
+    "semantic_hash": ""
   },
   "backend/ml/dataset.py": {
-    "mtime": 1788674817.5756629,
-    "ast_hash": "9478595ab887b83f3f9a30815f6a4b7f",
-    "semantic_hash": "9478595ab887b83f3f9a30815f6a4b7f"
+    "mtime": 1789241461.924962,
+    "ast_hash": "dc74f09b6698bbb32ad8cac8a7abfc15",
+    "semantic_hash": ""
   },
   "backend/ml/model.py": {
-    "mtime": 1788678897.7665842,
-    "ast_hash": "e5c61f0ded4b53f95578831c68eb2831",
-    "semantic_hash": "e5c61f0ded4b53f95578831c68eb2831"
+    "mtime": 1789149656.2292871,
+    "ast_hash": "0854630876d4771b2cae53c37b672947",
+    "semantic_hash": ""
   },
   "backend/ml/predict.py": {
-    "mtime": 1788678897.765582,
-    "ast_hash": "c3782ed3ef0a8d0e61379f2438c7ff6c",
-    "semantic_hash": "c3782ed3ef0a8d0e61379f2438c7ff6c"
-  },
-  "backend/ml/selective_trim.py": {
-    "mtime": 1788678556.1783037,
-    "ast_hash": "46b5482ae662f0abe2c0f05f36207b60",
-    "semantic_hash": "46b5482ae662f0abe2c0f05f36207b60"
+    "mtime": 1789241434.589643,
+    "ast_hash": "b790cb7fc81ffd4313ca5528cd069bca",
+    "semantic_hash": ""
   },
   "backend/ml/shrink_and_tile.py": {
-    "mtime": 1788678584.9607234,
-    "ast_hash": "48073b5180155966812c7fd898d756c3",
-    "semantic_hash": "48073b5180155966812c7fd898d756c3"
-  },
-  "backend/ml/tile_existing.py": {
-    "mtime": 1788678556.1793125,
-    "ast_hash": "da5c16f50f4034e5715dd68dfbaf5b5f",
-    "semantic_hash": "da5c16f50f4034e5715dd68dfbaf5b5f"
+    "mtime": 1789151954.4928906,
+    "ast_hash": "95aa44ab8d46007fd474d3053cdb0505",
+    "semantic_hash": ""
   },
   "backend/ml/train.py": {
-    "mtime": 1788680672.774627,
-    "ast_hash": "3068bc835024bb5d1eb6f98b1009ba73",
-    "semantic_hash": "3068bc835024bb5d1eb6f98b1009ba73"
+    "mtime": 1789149668.7177072,
+    "ast_hash": "3a47bf1b168b4882a1214ca598fa5b42",
+    "semantic_hash": ""
   },
   "backend/ml/trim_and_tile.py": {
     "mtime": 1788679875.4560826,
@@ -320,9 +295,9 @@
     "semantic_hash": "3a7f2403f893786c6cdaef42e8f74f95"
   },
   "backend/models/oil_unet_metrics.json": {
-    "mtime": 1788679864.0364847,
-    "ast_hash": "aad4698578bb7af36fc06eccd834af75",
-    "semantic_hash": "aad4698578bb7af36fc06eccd834af75"
+    "mtime": 1789214597.2423446,
+    "ast_hash": "7333706efdc8bc253459f5649d4fec80",
+    "semantic_hash": ""
   },
   "data/demo/unet_preview/big_slick.png": {
     "mtime": 1788681149.6003973,
@@ -338,5 +313,400 @@
     "mtime": 1788681149.6698747,
     "ast_hash": "852d7dc36f1a2d2a719e3a798ca93bdd",
     "semantic_hash": "852d7dc36f1a2d2a719e3a798ca93bdd"
+  },
+  ".grok/hooks/honesty-check.json": {
+    "mtime": 1789292981.7517047,
+    "ast_hash": "1c44f9d31c13dc53b879fbc3ee407a45",
+    "semantic_hash": ""
+  },
+  "advise/dataset.py": {
+    "mtime": 1789238739.9259193,
+    "ast_hash": "430151ec8e5ea9a0cffcad92cfb1e3d9",
+    "semantic_hash": ""
+  },
+  "advise/inference_config.example.json": {
+    "mtime": 1789238724.010492,
+    "ast_hash": "ab5ea2f6709714a598fe2077834ef6be",
+    "semantic_hash": ""
+  },
+  "advise/manifest.py": {
+    "mtime": 1789238727.8233044,
+    "ast_hash": "2249688705f6489aa496e4b57b629396",
+    "semantic_hash": ""
+  },
+  "advise/model.py": {
+    "mtime": 1789238797.6010163,
+    "ast_hash": "2b910ec7b507853c781e6d5cdad98dca",
+    "semantic_hash": ""
+  },
+  "advise/pipeline_config.py": {
+    "mtime": 1789238710.0796196,
+    "ast_hash": "fffa2e5b488f49c23e7919a7aa7016c1",
+    "semantic_hash": ""
+  },
+  "advise/preprocessing.py": {
+    "mtime": 1789238730.820476,
+    "ast_hash": "22911993a1df17b181192a190e3c55ac",
+    "semantic_hash": ""
+  },
+  "backend/ml/calibrate.py": {
+    "mtime": 1789241713.0260115,
+    "ast_hash": "554af9f5cf96fe165b957a066d3d3fd4",
+    "semantic_hash": ""
+  },
+  "backend/ml/eval_part3.py": {
+    "mtime": 1789241445.7621784,
+    "ast_hash": "f6af1d058a3fa18392d04dc943f4e0ee",
+    "semantic_hash": ""
+  },
+  "backend/ml/honesty_check.py": {
+    "mtime": 1789241701.9313533,
+    "ast_hash": "1eb16bac73ccc800b02b5719e61f2b2d",
+    "semantic_hash": ""
+  },
+  "backend/ml/part3_guard.py": {
+    "mtime": 1789241512.0664332,
+    "ast_hash": "ca5afef230f227d2cf53853750485687",
+    "semantic_hash": ""
+  },
+  "backend/ml/see_model.py": {
+    "mtime": 1788843949.194835,
+    "ast_hash": "9d69f825ea5d38fd619832486221e4d3",
+    "semantic_hash": ""
+  },
+  "backend/ml/test_predict_stitch.py": {
+    "mtime": 1789241561.0108235,
+    "ast_hash": "44cf32c210303d0fa1ddc4b96beb3585",
+    "semantic_hash": ""
+  },
+  "backend/ml/tile_part2.py": {
+    "mtime": 1789123432.8833058,
+    "ast_hash": "6b65f186522166a09e549be98a91832b",
+    "semantic_hash": ""
+  },
+  "backend/models/oil_unet_part3_test.json": {
+    "mtime": 1789289788.2333527,
+    "ast_hash": "5af7c118a925c7e982dff82514c5cc21",
+    "semantic_hash": ""
+  },
+  "data/demo/upload_001.json": {
+    "mtime": 1789295681.3986504,
+    "ast_hash": "ad98e291019be26610f82b104a36d070",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/package.json": {
+    "mtime": 1789050064.1906595,
+    "ast_hash": "05dfd41d3d6717a05b872df1c024b992",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/public/case_001.json": {
+    "mtime": 1788529336.2767498,
+    "ast_hash": "2cba2339bbcd27925f1b740c88ccb947",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/api.ts": {
+    "mtime": 1789292981.7517047,
+    "ast_hash": "f9c5fefbc0c6a950cba0185a5c58db14",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/caseView.ts": {
+    "mtime": 1789294178.1795492,
+    "ast_hash": "ab999b6503634adad4727c61cd89ee18",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/engine/engine.ts": {
+    "mtime": 1789133589.3105123,
+    "ast_hash": "9cc6dc51d0d3063d8f0d41b97eeec1cd",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/engine/fields.ts": {
+    "mtime": 1789050063.942685,
+    "ast_hash": "7aea56c230ef1255ccd179649242c6a8",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/engine/hindcast.ts": {
+    "mtime": 1789050063.9757051,
+    "ast_hash": "2f7a3562af27de65d4ed58417293f9cb",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/engine/particles.ts": {
+    "mtime": 1789050063.958602,
+    "ast_hash": "ee78c550aa38e77ac35473e6025a557c",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/engine/rng.ts": {
+    "mtime": 1789050064.0007527,
+    "ast_hash": "0c0c4c7676d3ddd20e53f7290c8756f6",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/engine/scoring.ts": {
+    "mtime": 1789050063.9255464,
+    "ast_hash": "32e43dfc6bae69c0fb6fa11d404d64e0",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/engine/slick.ts": {
+    "mtime": 1789050064.0189753,
+    "ast_hash": "deee1ff85460022b4b838131f7b66882",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/engine/vessels.ts": {
+    "mtime": 1789050063.9911113,
+    "ast_hash": "0bbb3c39c9dcddf8f6bead366eb4613e",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/geo.ts": {
+    "mtime": 1789292300.0213494,
+    "ast_hash": "8ff0b18d6e8d2c019c9901439fc1a522",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/leeway.ts": {
+    "mtime": 1789294178.1343143,
+    "ast_hash": "97e1d7aaf697a0d2704555685157fba2",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/main.ts": {
+    "mtime": 1789293747.1927125,
+    "ast_hash": "7cb887cc6c37d1a63377c6f7f2e416cf",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/render/camera.ts": {
+    "mtime": 1789292300.0608907,
+    "ast_hash": "22dba17a9f0f43f1fb51386c4b153189",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/render/minimap.ts": {
+    "mtime": 1789135642.487895,
+    "ast_hash": "374ac417d20f088d638d19d138ea21c6",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/render/ocean.ts": {
+    "mtime": 1789050064.128458,
+    "ast_hash": "3430f8ec5f1d8f3d7ff1e944d5a7d622",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/render/overlays.ts": {
+    "mtime": 1789294198.915385,
+    "ast_hash": "e4a45f35b895a240fd4d92ed8570b3e4",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/state.ts": {
+    "mtime": 1789292889.5918162,
+    "ast_hash": "23f0ac7fa6d085a7c89298ac789ef15d",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/test/debug-op.ts": {
+    "mtime": 1789050064.1010184,
+    "ast_hash": "86a79eaf818098fd0b09c63113acdef9",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/test/physics.ts": {
+    "mtime": 1789050064.108644,
+    "ast_hash": "591a8f051c73c9505ac5a5022f4c0594",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/tiles.ts": {
+    "mtime": 1789292300.0213494,
+    "ast_hash": "af250cf5813817f4c608330d47a1e875",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/ui/footer.ts": {
+    "mtime": 1789135705.0304668,
+    "ast_hash": "041690a7fe6b3bebbb2ec715f54ccf6a",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/ui/header.ts": {
+    "mtime": 1789292889.5918162,
+    "ast_hash": "d00a03d240d36b5139b2d9f0feb366ef",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/ui/leftPanel.ts": {
+    "mtime": 1789292981.7517047,
+    "ast_hash": "bedafdaf46f3bfb22c7946d588ae4740",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/ui/modal.ts": {
+    "mtime": 1789290699.536471,
+    "ast_hash": "8e365dce4a19d753f5148a85baa2c526",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/ui/pipeline.ts": {
+    "mtime": 1789133965.375549,
+    "ast_hash": "f1711e0382c19ed21c6348d0523f15e2",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/ui/rightPanel.ts": {
+    "mtime": 1789293312.0585234,
+    "ast_hash": "5f7f6d0eca975824d1960e07822c1db1",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/ui/timeline.ts": {
+    "mtime": 1789293763.941762,
+    "ast_hash": "580edfedbbb90dfbb7b3b32a669c00c9",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/src/ui/upload.ts": {
+    "mtime": 1789360106.1280787,
+    "ast_hash": "17a9f0ea5e0d5ff8281c5f926f667438",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/tsconfig.json": {
+    "mtime": 1789050064.2107663,
+    "ast_hash": "2c92ae835abdc6ea184c2087d9f3ced8",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/vite.config.ts": {
+    "mtime": 1789143369.5955465,
+    "ast_hash": "287be41a42bd816ce2371f427dc7ad75",
+    "semantic_hash": ""
+  },
+  ".grok/agents/honesty-verifier.md": {
+    "mtime": 1789241656.1622832,
+    "ast_hash": "10393b857d61aed03923c40069db89ba",
+    "semantic_hash": ""
+  },
+  ".grok/agents/work-watchdog.md": {
+    "mtime": 1789292981.7517047,
+    "ast_hash": "594a6d55b752b26659477ea386701ab0",
+    "semantic_hash": ""
+  },
+  ".grok/rules/honesty.md": {
+    "mtime": 1789360263.4909937,
+    "ast_hash": "41efce00f4ed031941da69f1d5132c63",
+    "semantic_hash": ""
+  },
+  ".grok/skills/honesty-check/SKILL.md": {
+    "mtime": 1789360350.2153406,
+    "ast_hash": "937eef0ed187d2c1fac76fa37f1497b6",
+    "semantic_hash": ""
+  },
+  "AGENTS.md": {
+    "mtime": 1789360235.726865,
+    "ast_hash": "a077ccf98474642a23c40852f70c455e",
+    "semantic_hash": ""
+  },
+  "ASTRA_GAP_ANALYSIS_AND_VERIFICATION.md": {
+    "mtime": 1789360263.5043254,
+    "ast_hash": "ef7fd45c2571f8f442bc4d96fd1cbb4b",
+    "semantic_hash": ""
+  },
+  "CURRENT_STATE.md": {
+    "mtime": 1789360195.931764,
+    "ast_hash": "fdc7a184fde072f0562fe1613bcf2c52",
+    "semantic_hash": ""
+  },
+  "POST_HACKATHON_TODO.md": {
+    "mtime": 1789360235.7273748,
+    "ast_hash": "2188e738d9df6c4caf16703a330d530f",
+    "semantic_hash": ""
+  },
+  "PROJECT_PROGRESS_SUMMARY.md": {
+    "mtime": 1789360235.7448742,
+    "ast_hash": "6c759039f0b3cb1cf81689e23203e92f",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1789360235.7233367,
+    "ast_hash": "bb33e801e4baa65bfdabb0a7d1f42362",
+    "semantic_hash": ""
+  },
+  "ROOT_CAUSE_ANALYSIS_AND_IMPROVEMENT_LOGIC.md": {
+    "mtime": 1789360263.4936357,
+    "ast_hash": "f0d4bbcd7e9123f707a51305c9c45f1d",
+    "semantic_hash": ""
+  },
+  "SESSION_SUMMARY.md": {
+    "mtime": 1789360235.703451,
+    "ast_hash": "7c1a396deda1876be891f3df150879e1",
+    "semantic_hash": ""
+  },
+  "THIRD_PARTY.md": {
+    "mtime": 1789360263.4869943,
+    "ast_hash": "8147ca1637819a67fa2de69ad33b163e",
+    "semantic_hash": ""
+  },
+  "advise/AI_HANDOFF_RECALL_IMPROVEMENT.md": {
+    "mtime": 1789239553.0584228,
+    "ast_hash": "edd01ce9d13630a22063f5b913fbaffb",
+    "semantic_hash": ""
+  },
+  "advise/He configured and hardened the oil spill pipeline.txt": {
+    "mtime": 1789239758.0217352,
+    "ast_hash": "477ce7b86e89ae394eb6df359222e956",
+    "semantic_hash": ""
+  },
+  "backend/ml/requirements.txt": {
+    "mtime": 1788636458.5980864,
+    "ast_hash": "7d16c16d9f4f6b259fa0bd63cf6bc89b",
+    "semantic_hash": ""
+  },
+  "backend/requirements.txt": {
+    "mtime": 1788529435.1243174,
+    "ast_hash": "3eefef7fb262bc16c3d9cff800ada5a6",
+    "semantic_hash": ""
+  },
+  "frontend/public/README.txt": {
+    "mtime": 1788530077.884339,
+    "ast_hash": "ec4289079860261e8483b61460048ba5",
+    "semantic_hash": ""
+  },
+  "index.html": {
+    "mtime": 1788514207.8011427,
+    "ast_hash": "29b53827273f1ff50f3469c629d7395c",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/BUILD_LOG.md": {
+    "mtime": 1789360235.6989448,
+    "ast_hash": "9200b15933b3bf8e561ebc50d4bec848",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/PIPELINE_SPEC.md": {
+    "mtime": 1789360263.5072985,
+    "ast_hash": "09e1ee14506040bc18a354cc25c014cf",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/PLAN.md": {
+    "mtime": 1789360235.697946,
+    "ast_hash": "ec0e4a40974a1fbbc1e4551611f82df1",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/index.html": {
+    "mtime": 1789122565.580292,
+    "ast_hash": "a4deb03483174ae27b2b9223052ed2db",
+    "semantic_hash": ""
+  },
+  "3dmodels/textures/hull_ao_metallic_roughness.jpg": {
+    "mtime": 1788537950.307336,
+    "ast_hash": "7270d163a3bd4659cb1dccff06251654",
+    "semantic_hash": ""
+  },
+  "3dmodels/textures/hull_normal.jpg": {
+    "mtime": 1788537950.2066226,
+    "ast_hash": "b30a8ab6753a9512ff36b795ecacc8be",
+    "semantic_hash": ""
+  },
+  "3dmodels/textures/rigging_ao_metallic_roughness.jpg": {
+    "mtime": 1788537950.3528886,
+    "ast_hash": "91ee6eb286ea9e02ba6a0fd96cc94686",
+    "semantic_hash": ""
+  },
+  "3dmodels/textures/rigging_normal.jpg": {
+    "mtime": 1788537950.6000583,
+    "ast_hash": "a3fe2c418fb5788ce0b3b6de3f67c212",
+    "semantic_hash": ""
+  },
+  "3dmodels/textures/sails_ao_metallic_roughness.jpg": {
+    "mtime": 1788537950.5219154,
+    "ast_hash": "b3177fc25ab1dddd02e30a3d59737f8e",
+    "semantic_hash": ""
+  },
+  "3dmodels/textures/sails_normal.jpg": {
+    "mtime": 1788537950.6647093,
+    "ast_hash": "6b419b67936f4374c0f0f686e7aa3187",
+    "semantic_hash": ""
+  },
+  "oceantrace_frontend/public/sar_preview.png": {
+    "mtime": 1788528331.8136315,
+    "ast_hash": "b149992e2aedec384dbef98b9dbdf15b",
+    "semantic_hash": ""
   }
 }

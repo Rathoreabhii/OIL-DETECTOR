@@ -1,6 +1,13 @@
-# Maritime environment
+# Maritime environment (port 5173 — frozen)
 
-Cinematic browser scene for the oil-detector project: **spectral FFT ocean**, atmosphere, and a clean **wind / current / time** API.
+**This README is the cinematic FFT ocean only.** Do not demo **5173**.
+
+- Judge Map: **http://localhost:5174** — `SIH.md`
+- Dashboard: **http://localhost:5175** — `oceantrace_frontend/`
+- Live numbers: **`CURRENT_STATE.md`**
+- API: port **8000**
+
+Cinematic browser scene: **spectral FFT ocean**, atmosphere, and a clean **wind / current / time** API.
 
 This pass is **open ocean only**. No land, city, oil, ships, AIS, or forensic UI.
 

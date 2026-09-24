@@ -1,0 +1,19 @@
+{
+  "name": "oceantrace",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "description": "OCEANTRACE — Satellite Oil Spill Attribution System (NTRO | SIH 2026). Zero runtime dependencies.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit -p tsconfig.json && vite build",
+    "preview": "vite preview",
+    "test": "tsx src/test/physics.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.2"
+  }
+}

@@ -4,7 +4,7 @@ Not HYCOM. Not Navier-Stokes.
 Leeway approximation, not an operational ocean model.
 
 Transport = 100% of current + WIND_FACTOR of wind, both along toward_deg
-(0 = east, 90 = south). from_deg is ignored if present.
+(0 = north, 90 = east — same as AIS heading). from_deg is ignored if present.
 """
 
 from __future__ import annotations
@@ -34,8 +34,8 @@ def _speed_toward(vec: dict[str, Any] | None) -> tuple[float, float]:
 
 def _east_north_ms(speed_ms: float, toward_deg: float) -> tuple[float, float]:
     rad = math.radians(toward_deg)
-    # Clockwise from east: 0 east, 90 south.
-    return speed_ms * math.cos(rad), -speed_ms * math.sin(rad)
+    # Navigation: 0 = north, 90 = east (same as AIS heading).
+    return speed_ms * math.sin(rad), speed_ms * math.cos(rad)
 
 
 def leeway_velocity_ms(wind: dict, current: dict) -> tuple[float, float]:

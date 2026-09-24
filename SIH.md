@@ -6,13 +6,13 @@
 
 This is the **oil-spill investigation map & Deep Learning SAR segmentation system**.
 
-- **AI Detector (Phase B).** U-Net retrained on TIFF **index 1** (DIMAP `Sigma0_VV_db`, the high-contrast pol). Independent val: **Dice 0.881, recall 0.902, precision 0.861.** Map **Run investigation** still does **not** run it. See `STATUS.md`.
-- **Trimmed Zenodo part 1.** 1,192 512×512 tiles in `data/processed_512/` (228 MB).
+- **AI Detector (Phase B).** U-Net on TIFF **index 1** (`Sigma0_VV_db`). **Part 3 is frozen test.** Latest active model is Run-2 lineage (`oil_unet.pt` = `backup_run2` copy, recall ~67%). 30ep retrain `oil_unet_new_30ep_54recall.pt` measured 54.2% recall / 0.662 Dice on Part 3 — **stale; not active**; `oil_unet_part3_test.json` still reflects it. Do not quote `oil_unet_part3_test.json` as active until one frozen re-eval after night retrain, then stop. Dice 0.881 retired leaky tile split — do not quote it. Live numbers: `CURRENT_STATE.md` + `backend/models/oil_unet_part3_test.json`. Map **Run investigation** does **not** run the U-Net; **Upload does** (PNG/GeoTIFF). Tile-val `oil_unet_metrics_backup.json` epoch 15: Dice 0.844 recall 0.896 prec 0.798.
+- **Tiles now.** **9,296** 512×512 PNGs (5,128 oil / 3,156 lookalike / 1,012 no-oil) from 500+400+200 scenes. Leftover unused: 700 oil, 285 lookalike, 485 no-oil. Retrain those **after** the PPT (`POST_HACKATHON_TODO.md`).
 - **Demo case.** Canned SAR + synthetic AIS. Always works offline.
 - **Not an operational NTRO system.** Subtitle on the app says so. No fake LIVE badge.
 - **Phone photos are not SAR.** Upload is for Sentinel-1 GRD / dataset PNG (VV/VH), not RGB holiday JPEGs.
 
-The cinematic **3D FFT ocean** at the repo root is **frozen**. Do not demo port **5173**. The forensic map is on **http://localhost:5174** (3-minute script default).
+The cinematic **3D FFT ocean** at the repo root is **frozen**. Do not demo port **5173**. Judge Map: **http://localhost:5174**. Optional dashboard: **http://localhost:5175**.
 
 **Sea** tab: decorative water (`frontend/public/sea.mp4`, fallback generated waves). Same JSON as Map. Darkened slick + ships overlaid. The video is **not SAR** and is **not used for detection**.
 
@@ -78,7 +78,7 @@ Same clicks; say the pipeline:
 3. Drift is **documented leeway**, not HYCOM, not “AI trajectory.”
 4. Formula on the panel: `0.30 type + 0.30 proximity + 0.20 time + 0.10 heading + 0.10 AIS gap`.
 5. Rank-1 tanker reasons: **type + distance to hindcast origin + AIS gap**. Rank-last is passenger **KONKAN QUEEN** (far, low type prior).
-6. Upload: **Sentinel-1 GRD / dataset PNG. RGB photos are not SAR.** Same detect → drift → score API later.
+6. Upload: **PNG or GeoTIFF (.tif, VV band 1).** RGB photos are not SAR. Same detect → drift → score. 2048 TIFFs can take 1–2 min. Without AIS CSV there are no ranked ships.
 
 ---
 
@@ -87,7 +87,7 @@ Same clicks; say the pipeline:
 | Claim they might hear | Truth |
 |---|---|
 | Operational NTRO tool | **No.** SIH demo case. |
-| LIVE satellite / trained detector | **No live satellite.** Map serves canned JSON. U-Net val Dice **0.881** on public tiles; upload can call it; Map **Run investigation** does not. |
+| LIVE satellite / trained detector | **No live satellite.** Map serves canned JSON. Latest Part 3 oil Scene Hit Rate **98.7% (148/150)**, Dice **0.662** (retrained 30ep; Gaussian stitch was **0.758**). Upload (PNG/GeoTIFF) can call the U-Net; Map **Run investigation** does not. |
 | Phone photo of a beach | **Not SAR.** Reject. |
 | AI named the ship | Weighted formula; each ship has `reasons[]`. |
 | 3D water is the product | **Frozen.** Map is the product. |

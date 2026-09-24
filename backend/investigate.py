@@ -102,7 +102,7 @@ def investigate(
         "region": _region(bounds),
         "observed_at": observed_at_iso,
         "sar": {
-            "image_url": "",
+            "image_url": str(slick.get("preview_url") or ""),
             "bounds": bounds,
             "sensor": "upload",
             "note": note,

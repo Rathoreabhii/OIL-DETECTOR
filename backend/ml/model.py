@@ -58,8 +58,8 @@ class StandaloneUNet(nn.Module):
         return self.out_conv(d1)
 
 
-def build_model(device: str = "cuda", pretrained: bool = True) -> nn.Module:
-    """Build U-Net. Inference should pass pretrained=False (no ImageNet download)."""
+def build_model(device: str = "cuda", pretrained: bool = True, allow_fallback: bool = False) -> nn.Module:
+    """Build SMP EfficientNet-B0 U-Net. Fails loudly if SMP/arch mismatches (no silent swap)."""
     try:
         import segmentation_models_pytorch as smp
         weights = ENCODER_WEIGHTS if pretrained else None
@@ -72,7 +72,13 @@ def build_model(device: str = "cuda", pretrained: bool = True) -> nn.Module:
             activation=None,  # Returns raw logits
         )
     except Exception as e:
-        print(f"[!] SMP not available or offline ({e}). Using StandaloneUNet.")
+        if not allow_fallback:
+            raise RuntimeError(
+                f"SMP U-Net {ENCODER} build failed ({e}). Refusing silent StandaloneUNet "
+                "substitution — checkpoint provenance would break. Pass allow_fallback=True "
+                "only for manual legacy debugging."
+            ) from e
+        print(f"[!] SMP not available ({e}). Using StandaloneUNet (legacy debug only).")
         model = StandaloneUNet(in_channels=IN_CHANNELS, out_channels=CLASSES)
 
     return model.to(device)
@@ -98,6 +104,42 @@ class CombinedDiceBCELoss(nn.Module):
         dice_loss = 1.0 - ((2.0 * intersection + self.smooth) / (probs_flat.sum() + targets_flat.sum() + self.smooth))
 
         return self.bce_weight * bce_loss + self.dice_weight * dice_loss
+
+
+class TverskyFocalLoss(nn.Module):
+    """Tversky Loss (recall-boosted) + Focal BCE for SAR oil spill segmentation.
+
+    alpha > 0.5 penalises false negatives (missed oil) more than false positives.
+    gamma > 0 down-weights easy sea pixels (focal term).
+    """
+    def __init__(self, alpha: float = 0.7, beta: float = 0.3,
+                 focal_gamma: float = 2.0, tversky_weight: float = 0.6,
+                 smooth: float = 1e-6):
+        super().__init__()
+        self.alpha = alpha          # FN weight (higher = punish missed oil more)
+        self.beta = beta            # FP weight
+        self.focal_gamma = focal_gamma
+        self.tversky_weight = tversky_weight
+        self.bce_weight = 1.0 - tversky_weight
+        self.smooth = smooth
+
+    def forward(self, logits: torch.Tensor, targets: torch.Tensor) -> torch.Tensor:
+        # --- Focal BCE ---
+        bce = F.binary_cross_entropy_with_logits(logits, targets, reduction="none")
+        pt = torch.exp(-bce)
+        focal_bce = ((1.0 - pt) ** self.focal_gamma * bce).mean()
+
+        # --- Tversky index (recall-weighted Dice) ---
+        probs = torch.sigmoid(logits)
+        p_flat = probs.view(-1)
+        t_flat = targets.view(-1)
+        tp = (p_flat * t_flat).sum()
+        fp = (p_flat * (1.0 - t_flat)).sum()
+        fn = ((1.0 - p_flat) * t_flat).sum()
+        tversky = (tp + self.smooth) / (tp + self.alpha * fn + self.beta * fp + self.smooth)
+        tversky_loss = 1.0 - tversky
+
+        return self.bce_weight * focal_bce + self.tversky_weight * tversky_loss
 
 
 def calculate_metrics(logits: torch.Tensor, targets: torch.Tensor, threshold: float = 0.5, smooth: float = 1e-6):

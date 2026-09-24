@@ -13,6 +13,9 @@ from pathlib import Path
 from typing import Any
 
 PNG_SIG = b"\x89PNG\r\n\x1a\n"
+TIFF_MAGICS = (b"II*\x00", b"MM\x00*", b"II+\x00", b"MM\x00+")
+# Same band as training: DIMAP Sigma0_VV_db is TIFF index 1.
+SAR_POL_INDEX = 1
 EARTH_RADIUS_KM = 6371.0
 K_STD = 1.2
 MIN_POLY = 8
@@ -46,7 +49,7 @@ def detect_slick(image_bytes: bytes, bounds: list) -> dict:
     elif isinstance(image_bytes, bytearray):
         image_bytes = bytes(image_bytes)
     if not isinstance(image_bytes, bytes):
-        raise ValueError("image_bytes must be PNG or JPEG bytes")
+        raise ValueError("image_bytes must be PNG, JPEG, or GeoTIFF bytes")
     if not image_bytes:
         raise ValueError("Cannot decode image: empty payload")
 
@@ -57,6 +60,7 @@ def detect_slick(image_bytes: bytes, bounds: list) -> dict:
         raise
     except Exception as exc:
         raise ValueError(f"Cannot decode image: {exc}") from exc
+    preview_url = _save_upload_preview(gray)
     height = len(gray)
     width = len(gray[0]) if height else 0
     if height < 1 or width < 1:
@@ -74,9 +78,7 @@ def detect_slick(image_bytes: bytes, bounds: list) -> dict:
             unet_model = get_trained_model()
             if unet_model is not None:
                 arr_2d = np.array(gray, dtype=np.uint8)
-                pred_mask, probs = predict_mask(
-                    arr_2d, unet_model, threshold=0.5, return_prob=True
-                )
+                pred_mask, probs = predict_mask(arr_2d, unet_model, return_prob=True)
                 poly_ll = mask_to_latlon_polygon(pred_mask, bounds)
                 if not poly_ll or len(poly_ll) < 3:
                     print(
@@ -98,7 +100,8 @@ def detect_slick(image_bytes: bytes, bounds: list) -> dict:
                         "centroid": [round(cy, 6), round(cx, 6)],
                         "area_km2": round(area_km2, 3),
                         "confidence": round(confidence, 3),
-                        "age_hours_est": None,
+                        "age_hours_est": 16,
+                        "preview_url": preview_url,
                         "source": "unet-sentinel1",
                         "note": (
                             "U-Net on Sentinel-1-like grayscale. "
@@ -144,10 +147,28 @@ def detect_slick(image_bytes: bytes, bounds: list) -> dict:
         "centroid": [round(centroid[0], 6), round(centroid[1], 6)],
         "area_km2": round(area_km2, 3),
         "confidence": round(confidence, 3),
-        "age_hours_est": None,
+        "age_hours_est": 16,
+        "preview_url": preview_url,
         "source": "baseline-darkspot",
         "note": note,
     }
+
+
+def _save_upload_preview(gray: list[array]) -> str:
+    """Write 8-bit preview so the dashboard can show the uploaded SAR frame."""
+    try:
+        import numpy as np
+        from PIL import Image
+    except ImportError:
+        return ""
+    try:
+        arr = np.array(gray, dtype=np.uint8)
+        out = Path(__file__).resolve().parent.parent / "data" / "demo" / "upload_preview.png"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        Image.fromarray(arr, mode="L").save(out)
+        return "/demo/upload_preview.png"
+    except Exception:
+        return ""
 
 
 def _clamp01(value: float) -> float:
@@ -238,10 +259,52 @@ def _decode_image(image_bytes: bytes) -> tuple[list[array], int, float]:
                 raise png_exc from None
     if len(image_bytes) >= 2 and image_bytes[:2] == b"\xff\xd8":
         return _decode_pil(image_bytes, hint="JPEG")
+    if len(image_bytes) >= 4 and image_bytes[:4] in TIFF_MAGICS:
+        return _decode_tiff(image_bytes)
     try:
         return _decode_pil(image_bytes, hint="image")
     except Exception as exc:
-        raise ValueError("Cannot decode image: expected PNG or JPEG bytes") from exc
+        raise ValueError("Cannot decode image: expected PNG, JPEG, or GeoTIFF (.tif) bytes") from exc
+
+
+def _decode_tiff(image_bytes: bytes) -> tuple[list[array], int, float]:
+    """32-bit / uint SAR GeoTIFF → 8-bit gray, same stretch as training (VV index 1)."""
+    try:
+        import numpy as np
+        import tifffile
+    except ImportError as exc:
+        raise ValueError(
+            "Cannot decode GeoTIFF: install tifffile and numpy (backend/ml/requirements.txt)"
+        ) from exc
+    try:
+        arr = tifffile.imread(io.BytesIO(image_bytes))
+    except Exception as exc:
+        raise ValueError(f"Cannot decode GeoTIFF: {exc}") from exc
+    if arr is None or arr.size == 0:
+        raise ValueError("Cannot decode GeoTIFF: empty raster")
+    arr = np.asarray(arr)
+    if arr.ndim == 3:
+        ch = min(SAR_POL_INDEX, arr.shape[-1] - 1)
+        arr = arr[:, :, ch]
+    elif arr.ndim != 2:
+        raise ValueError(f"Cannot decode GeoTIFF: unexpected shape {arr.shape}")
+    h, w = int(arr.shape[0]), int(arr.shape[1])
+    if h < 1 or w < 1:
+        raise ValueError("Cannot decode GeoTIFF: zero-sized raster")
+    if h * w > MAX_PIXELS:
+        raise ValueError("Cannot decode GeoTIFF: image is too large")
+    if arr.dtype == np.uint8:
+        gray8 = arr
+    else:
+        a = arr.astype(np.float32, copy=False)
+        p2, p98 = np.percentile(a, (2, 98))
+        if p98 > p2:
+            a = np.clip(a, p2, p98)
+            gray8 = ((a - p2) / (p98 - p2) * 255.0).astype(np.uint8)
+        else:
+            gray8 = np.clip(a, 0, 255).astype(np.uint8)
+    gray = [array("B", gray8[r].tobytes()) for r in range(h)]
+    return gray, 1, 0.0
 
 
 def _decode_pil(image_bytes: bytes, hint: str) -> tuple[list[array], int, float]:
@@ -257,7 +320,7 @@ def _decode_pil(image_bytes: bytes, hint: str) -> tuple[list[array], int, float]
         im.load()
     except Exception as exc:
         raise ValueError(
-            f"Cannot decode {hint}: file is corrupt or not a valid PNG/JPEG"
+            f"Cannot decode {hint}: file is corrupt or not a valid PNG/JPEG/GeoTIFF"
         ) from exc
 
     mode = im.mode

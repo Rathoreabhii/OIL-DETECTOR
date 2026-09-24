@@ -3,7 +3,8 @@
 > **Project:** SIH 26143 (NTRO) — Satellite SAR Oil Spill Detection, Drift Simulation & AIS Vessel Attribution  
 > **Verification Date:** 2026-09-08  
 > **Audited Document:** *SIH 26143 — Master AI Prompt: Oil Spill Detection Full Pipeline* (45 pages by GPT Astra)  
-> **Target Codebase:** `E:\oil detector`
+> **Target Codebase:** `E:\oil detector`  
+> **Update 2026-09-13:** Scene split is in live `dataset.py`. TIFF index 1. Gaussian stitch on. GeoTIFF upload decode added. Part 3 frozen (`eval_part3.py` no CLI). Dice **0.881 retired**. Current Part 3 stitch numbers: `CURRENT_STATE.md`. Rows below may be stale.
 
 ---
 
@@ -15,11 +16,24 @@ GPT Astra conducted a comprehensive audit of the SIH 26143 oil spill pipeline an
 3. **Pillar 3 — AIS Vessel Attribution:** Lack of direct anomaly flags (`went_dark`, `slowed_or_stopped`, `course_deviation`) and missing vessel track geometry for map rendering.
 4. **Integration & UI:** Absence of an end-to-end command-line entry point (`pipeline.py`) and a unified, zero-dependency Leaflet dashboard.
 
-### Verification Verdict:
-Every single claim made by GPT Astra was **double-verified against the raw files and code lines in `E:\oil detector`**. 
-- **6 out of 7 core code gaps are 100% verified** and represent essential bugfixes or missing features.
-- **1 recommendation (Dual-Pol $IN\_CHANNELS=2$) requires careful qualification:** our dataset currently consists of 1,192 preprocessed single-channel tiles (Band 1 VV) after discovering Band 0 (VH) has near-zero contrast (~1 dB) and the raw 40 GB archive was deleted by the user to preserve laptop disk space.
-- **1 critical nuance caught during verification:** Astra's suggested scene-split regex (`"_".join(f.split("_")[:-2])`) assumes `<scene_id>_tile_<n>.png`, whereas our actual tiles are formatted as `00004_t005.png`. Using Astra's exact string split would produce an empty string; our regex must use `f.split("_")[0]` (`00004`).
+### Verification Verdict (Grok re-check 2026-09-08 — do not trust the line below without this section)
+
+The original “6/7 are 100% verified essential bugfixes” line is **too strong**. Re-read against `dataset.py`, `predict.py`, `score.py`, `ais.py`, `map.js`, `package.json`, and a live SEED=42 split:
+
+| Astra / this file said | Real? | What it actually is |
+|---|---|---|
+| Tile-level train/val leak | **Yes, worse than claimed** | SEED=42: **118/150 scenes leak**. **239/239 val tiles** share a scene with train. Dice 0.881 is **not** an unseen-scene score. Fix: split on `name.split("_")[0]` — **not** Astra’s `split("_")[:-2]` (that yields empty on `00004_t005.png`). |
+| Dual-pol blocked because 40 GB 7z deleted | **Half-wrong** | `images.7z` is gone. **Extracted Oil TIFFs still on disk (~47.6 GB, 1200 files).** 2-ch is optional re-tile, not impossible. Keep 1-ch for upload/demo. |
+| FocalDiceLoss is a required bugfix | **No — improvement** | `CombinedDiceBCELoss` is real and standard. Focal is optional. Do not retrain on judge day. |
+| `step = 384` is a tiling bug | **True as inconsistency, oversold as bug** | Config overlap is 64 → stride 448. 384 means **more** overlap (128 px). Last window is already appended. Coverage is not missing. 1-line tidy-up, not critical. |
+| Star polygon / largest blob only | **Yes** | `mask_to_latlon_polygon` 16 rays, `counts.argmax()`. Area still uses full mask pixels. OpenCV is **not** required (scipy `label` already exists). |
+| Missing PCA / elongation / age | **Partial** | Area, centroid, confidence exist. No PCA/elongation. `age_hours_est` is **None**. A backscatter “fresh/old” label without a calibrated model would be theatre. |
+| OpenDrift + CMEMS/ERA5 | **Not a bug; hardware/honesty no** | Leeway `current + 0.03*wind` is the documented demo. OpenDrift/NetCDF on 16 GB RAM + 8 GB GPU while Chrome runs is the opposite of the hardware table. |
+| No AIS tracks / no anomaly | **Wrong on tracks, partial on flags** | `ais.py` builds `track[]`. `map.js` draws `L.polyline`. Score already has **0.10 AIS gap** (30 min). No booleans named `went_dark` / `slowed_or_stopped`. |
+| Missing `pipeline.py` CLI | **True, low value** | `POST /api/investigate` already is detect→drift→score. CLI is extra, not SIH-blocking. |
+| Replace UI with zero-build Leaflet | **Wrong / unwanted** | Frontend is **vanilla Vite + Leaflet + Three**, not React. Map on 5174 is the product. Do not restyle into Astra’s second dashboard. |
+
+**Do next (if anything):** scene-level split, then optional contour polygons. Do **not** OpenDrift, do **not** dual-pol PNG upload, do **not** new dashboard, do **not** copy Astra’s regex.
 
 ---
 

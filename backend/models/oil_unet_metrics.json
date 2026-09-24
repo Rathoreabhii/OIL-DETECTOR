@@ -1,8 +1,10 @@
 {
-  "epoch": 9,
-  "val_dice": 0.8811163929056575,
-  "val_iou": 0.7874960248938236,
-  "val_recall": 0.901800551628247,
-  "val_precision": 0.8613598038593144,
-  "pol": "index1_VV_dimap"
+  "epoch": 21,
+  "val_dice": 0.8524783339232237,
+  "val_iou": 0.7428864823421883,
+  "val_recall": 0.9238826743245765,
+  "val_precision": 0.7913194398156843,
+  "pol": "index1_VV_dimap",
+  "lookalike_fp": 0.0004991531372070312,
+  "scene_split": true
 }

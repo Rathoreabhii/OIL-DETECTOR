@@ -55,6 +55,16 @@ def convert_32bit_to_8bit(arr: np.ndarray) -> np.ndarray:
     return norm
 
 
+def _tile_starts(length: int, tile: int, step: int) -> list[int]:
+    if length <= tile:
+        return [0]
+    starts = list(range(0, length - tile + 1, step))
+    last = length - tile
+    if last not in starts:
+        starts.append(last)
+    return starts
+
+
 def run_trim_and_tile(max_scenes: int = MAX_SCENES_TO_PROCESS):
     img_dir = DATA_DIR / "zenodo" / "01_Train_Val_Oil_Spill_images" / "Oil"
     mask_dir = DATA_DIR / "zenodo" / "masks" / "Mask_oil"
@@ -63,9 +73,10 @@ def run_trim_and_tile(max_scenes: int = MAX_SCENES_TO_PROCESS):
     out_mask_dir = PROCESSED_DIR / "masks"
     out_img_dir.mkdir(parents=True, exist_ok=True)
     out_mask_dir.mkdir(parents=True, exist_ok=True)
-    # Do not mix leftover low-contrast (index-0) tiles with a new index-1 run.
-    for leftover in list(out_img_dir.glob("*.png")) + list(out_mask_dir.glob("*.png")):
-        leftover.unlink()
+    # APPEND ONLY for full Part1/2 retrain. Do NOT wipe existing tiles here.
+    # The old index-0 wipe is removed — run it manually once if you truly need it:
+    #   python -c "import pathlib; [p.unlink() for p in (pathlib.Path('data/processed_512/images').glob('*.png'))]"
+    # Existing stems are skipped below.
 
     # Gather matching pairs
     raw_images = sorted(list(img_dir.glob("*.tif*")))
@@ -96,6 +107,10 @@ def run_trim_and_tile(max_scenes: int = MAX_SCENES_TO_PROCESS):
 
     pbar = tqdm(selected_pairs, desc="Processing Scenes")
     for img_p, mask_p in pbar:
+        stem = img_p.stem
+        # Append-only: skip stems already tiled (protects 9,296 working set).
+        if any(out_img_dir.glob(f"{stem}_t*.png")):
+            continue
         try:
             # 1. Read 32-bit SAR image and convert to 8-bit
             raw_img = tifffile.imread(str(img_p))
@@ -112,11 +127,10 @@ def run_trim_and_tile(max_scenes: int = MAX_SCENES_TO_PROCESS):
 
             h, w = img_8bit.shape
             tile_idx = 0
-            stem = img_p.stem
 
-            # 3. Slice into 512x512 tiles
-            for y in range(0, h - TILE_SIZE + 1, step):
-                for x in range(0, w - TILE_SIZE + 1, step):
+            # 3. Slice into 512x512 tiles — same far-edge cover as inference
+            for y in _tile_starts(h, TILE_SIZE, step):
+                for x in _tile_starts(w, TILE_SIZE, step):
                     t_img = img_8bit[y : y + TILE_SIZE, x : x + TILE_SIZE]
                     t_mask = mask_8bit[y : y + TILE_SIZE, x : x + TILE_SIZE]
 
